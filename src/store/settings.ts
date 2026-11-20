@@ -22,6 +22,7 @@ import path from "node:path";
 import { SETTINGS_FILE } from "../../config.ts";
 import {
 	sanitizeUserSettings,
+	withClaudeCodeDefaults,
 	type UserSettings,
 } from "../core/settings.ts";
 import type { SettingsStore } from "../core/ports.ts";
@@ -79,6 +80,16 @@ export function readFileAccessSettings(): FileAccessSettingsResult {
 	}
 	try { return fileAccessFromRecord(JSON.parse(raw)); }
 	catch { return { ok: false, error: FILE_ACCESS_ERROR }; }
+}
+
+/** Fork: on first boot (no settings.json yet) save Claude Code as the
+ *  provider and model choice, so the app runs on the user's Claude login
+ *  without asking for API keys. Saved once, so later changes in Settings
+ *  stick. Returns whether it wrote. */
+export function seedClaudeCodeDefaults(): boolean {
+	if (fs.existsSync(SETTINGS_FILE)) return false;
+	writeSettings(withClaudeCodeDefaults(null));
+	return true;
 }
 
 /** The persisted record, or null when none exists (first boot). Runs the

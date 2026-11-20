@@ -320,6 +320,29 @@ export function slotsConfigured(models: ModelsSettings | undefined): boolean {
 	return Boolean(models?.strong?.model && models?.cheap?.model && models?.vision?.model);
 }
 
+/** Fork default: run on the installed Claude Code CLI (the user's Claude
+ *  login, not per-token API keys) unless the user chose otherwise. An absent
+ *  opt-in counts as on; an explicit `false` stays off. Empty slots get a
+ *  Claude Code model; slots the user picked are kept. */
+export const CLAUDE_CODE_DEFAULT_SLOTS: Readonly<Record<ModelSlotName, string>> = {
+	strong: "sonnet",
+	cheap: "haiku",
+	vision: "sonnet",
+};
+
+export function withClaudeCodeDefaults(record: UserSettings | null): UserSettings {
+	const out: UserSettings = record ? { ...record } : { version: CURRENT_SETTINGS_VERSION };
+	if (typeof out.claudeCode?.enabled !== "boolean") out.claudeCode = { ...out.claudeCode, enabled: true };
+	if (out.claudeCode?.enabled !== true) return out;
+	const models: ModelsSettings = { ...out.models };
+	for (const slot of MODEL_SLOTS) {
+		if (models[slot]?.model) continue;
+		models[slot] = { ...models[slot], model: { provider: CLAUDE_CODE_PROVIDER, id: CLAUDE_CODE_DEFAULT_SLOTS[slot] } };
+	}
+	out.models = models;
+	return out;
+}
+
 /** Which slot a role draws from (model slots wave, 2026-09-20). Includes the
  *  conversation pair and pdfReader (not BackgroundModelRoles — the slot
  *  tier spans every role; only background roles surface per-role overrides). */
