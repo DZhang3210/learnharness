@@ -359,6 +359,9 @@ export interface PluginFrontendContext {
 		openSession(id: string): void;
 		/** Navigate to the host home page. */
 		openHome(): void;
+		/** Fork: open a new, unsent session draft, optionally in practice mode and
+		 * pre-filled with text. Nothing is created or sent until the learner sends. */
+		openNewSession(options?: { mode?: "teach" | "practice"; text?: string }): void;
 		/** Navigate to this plugin's registered view ID, not another plugin's view. */
 		openView(id: string): void;
 		/** Open this plugin's dedicated Settings page, not package management. */

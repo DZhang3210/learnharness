@@ -239,9 +239,10 @@ export function DraftShell({
 	);
 }
 
-export function NewSession({ initialConfigured, mode = "teach" }: { initialConfigured: boolean; mode?: "teach" | "practice" }) {
+export function NewSession({ initialConfigured, mode = "teach", initialText = "" }: { initialConfigured: boolean; mode?: "teach" | "practice"; initialText?: string }) {
 	const router = useRouter();
-	const [text, setText] = useState("");
+	// Fork: ?text= pre-fills the draft (the topic tracker's Teach/Practice buttons); nothing is sent until the learner sends.
+	const [text, setText] = useState(initialText);
 	/* The draft MIRROR ("nothing gets lost" round, 2026-10-01): the shell's
 	 * finish-first send calls THIS send after the dictation flush — which
 	 * landed via setState and may not have re-rendered yet. The send reads

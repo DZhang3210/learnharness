@@ -1,0 +1,27 @@
+.tt-root { --tt-green: #4ade80; --tt-blue: #60a5fa; --tt-amber: #fbbf24; color: var(--foreground, inherit); font-size: 14px; line-height: 1.5; padding: 16px; max-width: 960px; margin: 0 auto; }
+.tt-root .tt-muted { color: var(--color-muted-foreground, #8889); margin: 0; }
+.tt-root .tt-small { font-size: 12px; }
+.tt-root .tt-error { color: var(--color-error, #f87171); }
+.tt-root .tt-bar { height: 6px; border-radius: 3px; background: var(--border, #8884); margin: 10px 0 16px; overflow: hidden; }
+.tt-root .tt-bar-fill { height: 100%; background: var(--tt-green); }
+.tt-root .tt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.tt-root .tt-card { border: 1px solid var(--border, #8885); border-radius: 10px; padding: 12px; }
+.tt-root .tt-card-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px; color: var(--color-muted-foreground, #888); }
+.tt-root .tt-line { padding: 6px 0; border-top: 1px solid var(--border, #8883); }
+.tt-root .tt-line:first-of-type { border-top: 0; }
+.tt-root .tt-name { font-weight: 600; }
+.tt-root .tt-section { border: 1px solid var(--border, #8885); border-radius: 10px; margin-bottom: 10px; }
+.tt-root .tt-summary { cursor: pointer; padding: 10px 12px; }
+.tt-root .tt-list { padding: 0 12px 8px; }
+.tt-root .tt-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-top: 1px solid var(--border, #8883); }
+.tt-root .tt-info { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.tt-root .tt-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tt-root .tt-row .tt-actions { margin-top: 0; }
+.tt-root .tt-button { border: 1px solid var(--border, #8886); border-radius: 6px; padding: 2px 10px; background: transparent; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.tt-root .tt-button:hover { background: var(--accent, #8882); }
+.tt-root .tt-primary { border-color: var(--tt-blue); }
+.tt-root .tt-known { font-size: 12px; color: var(--color-muted-foreground, #888); cursor: pointer; }
+.tt-root .tt-chip { font-size: 11px; border-radius: 999px; padding: 0 8px; border: 1px solid var(--border, #8886); color: var(--color-muted-foreground, #888); }
+.tt-root .tt-chip-taught { border-color: var(--tt-amber); color: var(--tt-amber); }
+.tt-root .tt-chip-practised { border-color: var(--tt-green); color: var(--tt-green); }
+.tt-root .tt-chip-known { border-color: var(--tt-blue); color: var(--tt-blue); }

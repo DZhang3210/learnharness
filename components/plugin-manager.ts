@@ -465,6 +465,14 @@ export class PluginFrontendManager {
 			app: {
 				pathname: () => this.host.pathname(),
 				openHome: () => { if (this.current(life)) this.host.navigate("/"); },
+				openNewSession: options => {
+					if (!this.current(life)) return;
+					const query = new URLSearchParams();
+					if (options?.mode === "practice") query.set("mode", "practice");
+					if (typeof options?.text === "string" && options.text) query.set("text", options.text.slice(0, 2000));
+					const search = query.toString();
+					this.host.navigate(search ? `/chat/new?${search}` : "/chat/new");
+				},
 				openSession: id => { if (this.current(life)) this.host.navigate(`/chat/${encodeURIComponent(id)}`); },
 				openView: id => { if (this.current(life)) this.host.navigate(pluginViewPath(info.id, id)); },
 				openSettings: () => { if (this.current(life)) this.host.openSettings?.(info.id); },

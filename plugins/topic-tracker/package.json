@@ -1,0 +1,12 @@
+{
+  "name": "@learnharness/topic-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Study-topic tracker for LearnHarness.",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.cjs"
+  }
+}

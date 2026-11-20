@@ -92,6 +92,9 @@ interface Package {
 	contributionWarning?: string;
 }
 interface State { version: 1; enabled: Record<string, boolean> }
+
+/** Fork: Core plugins that are on until the learner turns them off. */
+const CORE_ENABLED_BY_DEFAULT: ReadonlySet<string> = new Set(["topic-tracker"]);
 const errorText = (e: unknown) => e instanceof Error ? e.message : String(e);
 const exists = (p: string) => { try { fs.lstatSync(p); return true; } catch (e) { if ((e as NodeJS.ErrnoException).code === "ENOENT") return false; throw e; } };
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
@@ -380,7 +383,8 @@ export function createPluginHost(deps: PluginHostDependencies) {
 				}
 				continue;
 			}
-			candidate.info.enabled = state.enabled[id] === true;
+			// Fork: some Core plugins start enabled until the learner chooses.
+			candidate.info.enabled = state.enabled[id] ?? (origin === "core" && CORE_ENABLED_BY_DEFAULT.has(id));
 			packages.set(id, candidate);
 			if (candidate.info.enabled && !candidate.blocked) await activate(candidate);
 		}

@@ -1,0 +1,11 @@
+{
+  "apiVersion": 1,
+  "id": "topic-tracker",
+  "name": "Topic tracker",
+  "version": "0.1.0",
+  "minAppVersion": "0.6.1",
+  "description": "Tracks your study topics: what's taught, practised or not started, with buttons that start a pre-filled Teach or Practice session. Makes no model calls.",
+  "main": "main.js",
+  "backend": "backend.cjs",
+  "styles": "styles.css"
+}
