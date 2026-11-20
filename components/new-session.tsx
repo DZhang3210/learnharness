@@ -247,7 +247,7 @@ export function NewSession({ initialConfigured, mode = "teach", initialText = ""
 	 * finish-first send calls THIS send after the dictation flush — which
 	 * landed via setState and may not have re-rendered yet. The send reads
 	 * the mirror; every write keeps it current. */
-	const textRef = useRef("");
+	const textRef = useRef(initialText);
 	const applyText = (v: string) => {
 		textRef.current = v;
 		setText(v);

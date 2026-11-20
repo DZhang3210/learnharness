@@ -99,6 +99,35 @@ for (const extra of ["plugins", "dist", path.join("node_modules", "electron")]) 
 	}
 }
 
+// 2d) Fork (Windows builds): Turbopack's externals in .next/node_modules are
+// links to the real packages, and electron-builder copies a link as a plain
+// folder. A package whose real home is a NESTED node_modules (shiki under
+// @streamdown/code) then loses the siblings it imports (@shikijs/*): Node
+// looks for them from the copied folder upward and never reaches the nested
+// directory. Hoist those siblings to the top level when nothing is there yet.
+const linked = path.join(STANDALONE, ".next", "node_modules");
+if (exists(linked)) {
+	const topLevel = path.join(STANDALONE, "node_modules");
+	const entries = fs.readdirSync(linked).flatMap((name) => name.startsWith("@")
+		? fs.readdirSync(path.join(linked, name)).map((child) => path.join(linked, name, child))
+		: [path.join(linked, name)]);
+	for (const entry of entries) {
+		if (!fs.lstatSync(entry).isSymbolicLink()) continue;
+		const target = fs.realpathSync(entry);
+		const nested = path.dirname(target).endsWith(`${path.sep}node_modules`) ? path.dirname(target) : path.dirname(path.dirname(target));
+		if (!nested.startsWith(topLevel + path.sep) || path.basename(nested) !== "node_modules") continue;
+		for (const name of fs.readdirSync(nested)) {
+			const packages = name.startsWith("@") ? fs.readdirSync(path.join(nested, name)).map((child) => path.join(name, child)) : [name];
+			for (const pkg of packages) {
+				const destination = path.join(topLevel, pkg);
+				if (exists(destination) || pkg === path.basename(target)) continue;
+				copyTree(path.join(nested, pkg), destination);
+				console.log(`[build-server] hoisted nested dependency for ${path.basename(entry)}: ${pkg.split(path.sep).join("/")}`);
+			}
+		}
+	}
+}
+
 // 3) Sanity: the runtime-read prompt assets must be present (the teacher
 //    agent reads them from disk at request time).
 for (const asset of [
